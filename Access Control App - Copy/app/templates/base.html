@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Control System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Access Control System</h1>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('routes.index') }}">Home</a></li>
+                    {% if current_user.is_authenticated %}
+                        <li><a href="{{ url_for('routes.gate_control') }}">Gate Control</a></li>
+                        <li><a href="{{ url_for('routes.live_feed') }}">Live Feed</a></li>
+                        <li><a href="{{ url_for('routes.view_users') }}">View Users</a></li>
+                        <li><a href="{{ url_for('routes.logs') }}">Access Logs</a></li>
+                        <li><a href="{{ url_for('routes.register') }}">Register Users</a></li>
+                        <li><a href="{{ url_for('routes.logout') }}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('routes.login') }}">Login</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for message in messages %}
+                    <div class="flash-message">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Access Control System. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

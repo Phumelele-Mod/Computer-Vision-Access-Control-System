@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Register Users</h1>
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+<form method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+    <label for="user_type">User Type:</label>
+    <select name="user_type" id="user_type" required>
+        <option value="permanent">Permanent</option>
+        <option value="temporal">Temporal</option>
+    </select><br>
+
+    <label for="full_name">Full Name:</label>
+    <input type="text" name="full_name" placeholder="Enter full name" required><br>
+
+    <label for="email">Email:</label>
+    <input type="email" name="email" placeholder="Enter email address" required><br>
+
+    <div id="permanent_fields">
+        <label for="face_image">Upload Face Image:</label>
+        <input type="file" name="face_image" id="face_image"><br>
+    </div>
+
+    <div id="temporal_fields" style="display: none;">
+        <label for="reason">Reason of Visit:</label>
+        <input type="text" name="reason" id="reason" placeholder="Enter reason for visit"><br>
+
+        <label for="duration">Duration (hours):</label>
+        <input type="number" name="duration" id="duration" placeholder="Enter duration in hours"><br>
+    </div>
+
+    <button type="submit">Register</button>
+</form>
+
+<script>
+    // Show/hide fields based on user type
+    document.getElementById('user_type').addEventListener('change', function() {
+        const permanentFields = document.getElementById('permanent_fields');
+        const temporalFields = document.getElementById('temporal_fields');
+        const faceImage = document.getElementById('face_image');
+        const reason = document.getElementById('reason');
+        const duration = document.getElementById('duration');
+
+        if (this.value === 'permanent') {
+            permanentFields.style.display = 'block';
+            temporalFields.style.display = 'none';
+            faceImage.setAttribute('required', true); // Add required for face image
+            reason.removeAttribute('required'); // Remove required for reason
+            duration.removeAttribute('required'); // Remove required for duration
+        } else {
+            permanentFields.style.display = 'none';
+            temporalFields.style.display = 'block';
+            faceImage.removeAttribute('required'); // Remove required for face image
+            reason.setAttribute('required', true); // Add required for reason
+            duration.setAttribute('required', true); // Add required for duration
+        }
+    });
+
+    // Validate form before submission
+    function validateForm() {
+        const userType = document.getElementById('user_type').value;
+        const faceImage = document.getElementById('face_image');
+
+        if (userType === 'permanent') {
+            if (faceImage.files.length === 0) {
+                alert("Please upload a face image for permanent users.");
+                return false;
+            }
+
+            const file = faceImage.files[0];
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+            if (!allowedTypes.includes(file.type)) {
+                alert("Only JPEG, PNG, or JPG images are allowed.");
+                return false;
+            }
+        }
+
+        return true;
+    }
+</script>
+{% endblock %}

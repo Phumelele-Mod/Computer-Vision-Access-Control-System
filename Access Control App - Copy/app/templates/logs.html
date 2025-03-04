@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+    <h1>Access Logs</h1>
+    <!-- Add a button to export logs -->
+    <a href="{{ url_for('routes.export_logs') }}" class="export-button">Export Logs to CSV</a>
+    <div class="table-container">
+        <table class="logs-table">
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>User Name</th>
+                    <th>Status</th>
+                    <th>Reason</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.Timestamp }}</td>
+                    <td>{{ log['User Name'] }}</td>
+                    <td>{{ log.Status }}</td>
+                    <td>{{ log.Reason }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

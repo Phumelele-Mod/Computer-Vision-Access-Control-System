@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="home-intro">
+    <h1>Welcome to Access Control System</h1>
+    <p>Your comprehensive solution for secure access management.</p>
+</div>
+<div class="features">
+    <div class="feature-item">
+        <h2>Gate Control</h2>
+        <p>Remotely manage gate operations with ease.</p>
+        <a href="{{ url_for('routes.gate_control') }}" class="button">Manage Gate</a>
+    </div>
+    <div class="feature-item">
+        <h2>Live Feed</h2>
+        <p>Monitor real-time video feed from your cameras.</p>
+        <a href="{{ url_for('routes.live_feed') }}" class="button">View Live Feed</a>
+    </div>
+    <div class="feature-item">
+        <h2>User Management</h2>
+        <p>View and deregister users efficiently.</p>
+        <a href="{{ url_for('routes.view_users') }}" class="button">Manage Users</a>
+    </div>
+    <div class="feature-item">
+        <h2>Access Logs</h2>
+        <p>Keep track of all access events and logs.</p>
+        <a href="{{ url_for('routes.logs') }}" class="button">View Logs</a>
+    </div>
+</div>
+{% endblock %}

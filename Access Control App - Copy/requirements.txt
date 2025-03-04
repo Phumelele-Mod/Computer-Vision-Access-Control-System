@@ -1,0 +1,16 @@
+Flask==2.3.2
+Flask-Login==0.6.2
+Flask-SocketIO==5.3.6
+python-socketio==5.8.0
+APScheduler==3.10.1
+pymongo==4.4.1
+python-dotenv==1.0.0
+certifi==2023.7.22
+qrcode==7.4.2
+numpy==1.24.3
+opencv-python==4.8.0.76
+mtcnn==0.1.1
+deepface==0.0.79
+Flask-Mail==0.9.1
+cryptography==41.0.3
+python-decouple==3.8

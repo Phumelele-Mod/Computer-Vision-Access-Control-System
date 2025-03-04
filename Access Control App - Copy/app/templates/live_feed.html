@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="live-feed">
+    <h1>Live Video Feed from Raspberry Pi</h1>
+    <img id="video-feed" src="" alt="Live Video Feed">
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
+<script>
+    // Connect to the WebSocket server
+    const socket = io("{{ RENDER_WS_URL }}");
+
+    // Handle incoming video frames
+    socket.on('update_frame', function(data) {
+        const img = document.getElementById('video-feed');
+        img.src = 'data:image/jpeg;base64,' + data.frame;
+    });
+
+    // Handle gate status updates
+    socket.on('update_gate_status', function(data) {
+        console.log('Gate status:', data.status);
+    });
+
+    // Handle access log updates
+    socket.on('update_logs', function(data) {
+        console.log('Access log:', data);
+    });
+</script>
+{% endblock %}

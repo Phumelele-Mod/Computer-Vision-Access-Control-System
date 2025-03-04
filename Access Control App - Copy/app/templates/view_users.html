@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block content %}
+    
+
+        <h2>Registered Permanent Users</h2>
+        <div class="table-container">
+            <table class="users-table">
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Enrolled</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in permanent_users %}
+                    <tr id="permanent-{{ user['_id'] }}">
+                        <td>{{ user['Full Name'] }}</td>
+                        <td>{{ user['Email'] }}</td>
+                        <td>{{ user['Registration Time'] }}</td>
+                        <td>
+                            <button class="delete-button" onclick="deleteUser('permanent', '{{ user['_id']|string }}')">Delete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <h2>Registered Temporal Users</h2>
+        <div class="table-container">
+            <table class="users-table">
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Reason</th>
+                        <th>Enrolled</th>
+                        <th>Valid for (hours)</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in temporal_users %}
+                    <tr id="temporal-{{ user['_id'] }}">
+                        <td>{{ user['Full Name'] }}</td>
+                        <td>{{ user['Email'] }}</td>
+                        <td>{{ user['Reason of Visit'] }}</td>
+                        <td>{{ user['Registration Time'] }}</td>
+                        <td>{{ user['Duration (hours)'] }}</td>
+                        <td>
+                            <button class="delete-button" onclick="deleteUser('temporal', '{{ user['_id']|string }}')">Delete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    
+
+    <script>
+        function deleteUser(userType, userId) {
+            // Confirmation dialog
+            if (!confirm('Are you sure you want to delete this user?')) {
+                return; // Stop if the user cancels the confirmation
+            }
+
+            // Create a new XMLHttpRequest object
+            var xhr = new XMLHttpRequest();
+
+            // Define the request
+            xhr.open('POST', '/delete_user', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+
+            // Define what happens on successful data submission
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Parse the JSON response
+                    var response = JSON.parse(xhr.responseText);
+
+                    if (response.success) {
+                        // Remove the deleted user row from the table
+                        var row = document.getElementById(userType + '-' + userId);
+                        if (row) {
+                            row.remove();
+                        }
+                        alert('User deleted successfully!');
+                    } else {
+                        alert('Failed to delete user: ' + response.message);
+                    }
+                } else {
+                    alert('An error occurred while deleting the user.');
+                }
+            };
+
+            // Define what happens in case of an error
+            xhr.onerror = function () {
+                alert('An error occurred while deleting the user.');
+            };
+
+            // Send the request with the user type and ID
+            xhr.send(JSON.stringify({
+                user_type: userType,
+                user_id: userId
+            }));
+        }
+    </script>
+
+
+{% endblock %}

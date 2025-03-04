@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="gate-control-container">
+    <h1>Gate Control</h1>
+    <form method="POST" class="gate-control-form">
+        <button type="submit" name="action" value="open" class="gate-button open-gate">
+            <span class="button-icon">🚪</span>
+            <span class="button-text">Open Gate</span>
+        </button>
+        <button type="submit" name="action" value="close" class="gate-button close-gate">
+            <span class="button-icon">🔒</span>
+            <span class="button-text">Close Gate</span>
+        </button>
+    </form>
+</div>
+{% endblock %}
