@@ -27,7 +27,7 @@ def delete_expired_users():
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = Config.SECRET_KEY
-    app.permanent_session_lifetime = timedelta(minutes=30)  # 30-minute session timeout
+    app.permanent_session_lifetime = timedelta(minutes=20)  # 30-minute session timeout
     app.config.from_object(Config)
     socketio.init_app(app)
     login_manager.init_app(app)
