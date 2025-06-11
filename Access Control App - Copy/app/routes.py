@@ -31,7 +31,6 @@ mail = Mail()
 # WebSocket event handlers
 @socketio.on('connect')
 def handle_connect():
-    
     print('Client connected')
 
 @socketio.on('disconnect')
@@ -75,6 +74,36 @@ def logout():
     logout_user()
     flash('You have been logged out', 'success')
     return redirect(url_for('routes.login'))
+
+
+@routes_blueprint.route('/change_password', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    if request.method == 'POST':
+        old_password = request.form.get('old_password')
+        new_password = request.form.get('new_password')
+        confirm_password = request.form.get('confirm_password')
+        
+        if not old_password or not new_password or not confirm_password:
+            flash('All fields are required', 'error')
+            return redirect(url_for('routes.change_password'))
+            
+        if new_password != confirm_password:
+            flash('New passwords do not match', 'error')
+            return redirect(url_for('routes.change_password'))
+        
+        if len(new_password) < 8:
+            flash('Password must be at least 8 characters long', 'error')
+            return redirect(url_for('routes.change_password'))
+        
+        if Admin.change_password(current_user.username, old_password, new_password):
+            flash('Password changed successfully', 'success')
+            return redirect(url_for('routes.index'))  # Changed from 'dashboard' to 'index'
+        else:
+            flash('Current password is incorrect', 'error')
+    
+    return render_template('change_password.html') 
+
 
 @routes_blueprint.route('/live_feed')
 @login_required
@@ -150,18 +179,30 @@ def register():
                 'Expiration Time': expiration_time.isoformat()
             }
 
-            # Encrypt the data before generating the QR code
-            encrypted_content = encrypt_data(temporal_user)
+            user_data_to_encrypt = {
+                'Full Name': temporal_user['Full Name'],
+                'Email': temporal_user['Email'],
+                'Reason': temporal_user['Reason'],
+                'Duration (hours)': temporal_user['Duration (hours)']
+            }
 
-            # Generate QR code
+            # Encrypt the filtered data before generating the QR code
+            encrypted_content = encrypt_data(user_data_to_encrypt)
 
+            # Add the encrypted content to the user data that will be stored
+            temporal_user['QR_Code'] = encrypted_content  
+            qr_code = temporal_user['QR_Code']
+
+            # Store the complete user data in MongoDB
+            #temporal_users.insert_one(temporal_user)
+
+            # Generate QR code (using the same encrypted_content)
             qr = qrcode.QRCode(
-                version=11,  # Use version 11
-                error_correction=qrcode.constants.ERROR_CORRECT_M,  # Medium error correction
-                box_size=10,  # Each module is 10x10 pixels
-                border=5  # 5-module-wide quiet zone
+                version=11,
+                error_correction=qrcode.constants.ERROR_CORRECT_M,
+                box_size=10,
+                border=5
             )
-
             qr.add_data(encrypted_content)
             qr.make(fit=True)
             img = qr.make_image(fill='black', back_color='white')
@@ -169,17 +210,19 @@ def register():
             img.save(img_bytes)
             img_bytes.seek(0)
 
+
+          
             # Send email with encrypted QR code
             msg = Message(
                 subject="Your Secure QR Code for Access",
                 recipients=[email],
                 sender=Config.MAIL_DEFAULT_SENDER
             )
-            msg.body = f"Dear {full_name},\n\nPlease find your QR code attached for access.\n\nReason: {reason}\nQR Code Validity: {duration} hours"
+            msg.body = f"Dear {full_name},\n\nPlease find your QR code attached for access at Phumelele Residents for your visit.\n\nQR Code Validity: {duration} hours"
             msg.attach("qrcode.png", "image/png", img_bytes.getvalue())
             mail.send(msg)
             flash('Temporal user registered and secure QR code sent via email.', 'success')
-            add_temporal_user(full_name, email, reason, duration, registration_time, expiration_time)
+            add_temporal_user(full_name, email, reason, duration, registration_time, expiration_time, qr_code)
 
             return redirect(url_for('routes.index'))
 
@@ -188,7 +231,7 @@ def register():
 @routes_blueprint.route('/logs')
 @login_required
 def logs():
-    logs = list(access_logs.find().sort('Timestamp', -1).limit(100))  # Get latest 100 logs
+    logs = list(access_logs.find().sort('Timestamp', -1).limit(1000))  # Get latest 1000 logs
     return render_template('logs.html', logs=logs)
 
 @routes_blueprint.route('/view_users')
@@ -226,7 +269,7 @@ def delete_user():
 @routes_blueprint.route('/export_logs')
 @login_required
 def export_logs():
-    logs = list(access_logs.find().sort('Timestamp', -1).limit(100))  
+    logs = list(access_logs.find().sort('Timestamp', -1).limit(1000))  
     csv_data = StringIO()
     csv_writer = csv.writer(csv_data)
     csv_writer.writerow(['Timestamp', 'User Name', 'Status', 'Reason'])
