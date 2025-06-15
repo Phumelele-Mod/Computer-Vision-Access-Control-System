@@ -60,7 +60,7 @@ The system comprises **three main components**:
 - Raspberry Pi OS (64-bit)  
 - Python 3.9 or higher  
 - MongoDB Atlas account  
-- Python libraries (see `Pi_Code/requirements.txt` and `web_app/requirements.txt`):  
+- Python libraries (see `Pi_Code/requirements.txt` and `Access Control App-Copy/requirements.txt`):  
   - `deepface`, `mtcnn`, `pyzbar`, `cryptography`, `flask`, `pymongo`, `opencv-python`, `rpi.gpio`
 
 ---
@@ -89,7 +89,7 @@ The system comprises **three main components**:
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/Access-Control-System-RPi.git
+    git clone https://github.com/Phumelele-Mod/Computer-Vision-Access-Control-System.git
     ```
 2. Configure environment variables
 2. Install dependencies:
