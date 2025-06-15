@@ -1,1 +1,12 @@
-
+opencv-python
+numpy
+deepface
+picamera2
+mtcnn
+scipy
+RPi.GPIO
+pyzbar
+python-socketio
+pymongo
+certifi
+cryptography
