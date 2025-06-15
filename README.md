@@ -82,7 +82,7 @@ The system comprises **three main components**:
 4. Configure environment variables in `pi_code/.env`:
     ```env
     CAMERA_DEVICE=/dev/video0
-    GPIO_RELAY_PIN=23
+    GPIO_RELAY_PIN=18
     ```
 
 ### Web App Setup
