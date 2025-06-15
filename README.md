@@ -89,7 +89,7 @@ The system comprises **three main components**:
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/Phumelele-Mod/Computer-Vision-Access-Control-System.git
+    git clone https://github.com/Phumelele-Mod/Computer-Vision-Based-Access-Control-System.git
     ```
 2. Configure environment variables
 2. Install dependencies:
