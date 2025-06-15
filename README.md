@@ -94,7 +94,7 @@ The system comprises **three main components**:
 2. Configure environment variables
 2. Install dependencies:
     ```bash
-    cd web_app
+    cd Access Control App-Copy
     pip install -r requirements.txt
     ```
 3. Create a MongoDB Atlas account at [mongodb.com](https://mongodb.com), set up a cluster, and add your connection string in `web_app/.env`:
