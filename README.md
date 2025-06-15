@@ -1,23 +1,23 @@
 # Computer Vision-Based Access Control System
 
-This repository contains the implementation of a **computer vision-based access control system** designed for secure, contactless authentication in residential environments. The system integrates **facial recognition** and **QR code scanning** for user authentication, a **Flask-based web application** for administrative control, and hardware integration with a **D5-Evo gate controller**.
+This repository contains the implementation of a **computer vision-based access control system** designed for secure, contactless authentication in residential environments. The system integrates **facial recognition** and **QR code scanning** for user authentication, a **Flask-based web application** for administrative control, mongodb atlas database for storing user information access logs and admin credentials.
 
 It was developed as a final-year project for the **Bachelor of Engineering in Electrical and Electronics Engineering** at the **University of Eswatini**.
 
 ---
 
-## 📋 Overview
+## Overview
 
 The system achieves:
 
 - **87.1%** accuracy for facial recognition using DeepFace and MTCNN  
 - **99.9%** accuracy for QR code authentication with PyZBar and AES-128 encryption (Fernet)  
-- **134.8 ms** average QR code processing time and **120 ms** gate response  
+- **134.8 ms** average QR code processing time and **1840 ms** facial recognition 
 - Secure cloud storage with **MongoDB Atlas** and a user-friendly web interface  
 
 ---
 
-## 🧠 System Architecture
+## System Architecture
 
 The system comprises **three main components**:
 
@@ -43,44 +43,42 @@ The system comprises **three main components**:
 
 ---
 
-## 🔌 Hardware Requirements
+## Hardware Requirements
 
 - Raspberry Pi 4 Model B (8GB RAM)  
-- Raspberry Pi HQ Camera with M12 high-resolution lens  
-- 64GB microSD card  
+- Raspberry Pi HQ Camera 12.3 MP  
+- MicroSD card at least 32 GB
 - 5V/3A USB-C power supply  
-- One-channel relay (5V DC, 10A AC)  
-- D5-Evo gate controller  
+- One-channel relay (5V DC, 10A AC)    
 - Weatherproof plastic enclosure  
 
 ---
 
-## 💻 Software Requirements
+## Software Requirements
 
 - Raspberry Pi OS (64-bit)  
 - Python 3.9 or higher  
 - MongoDB Atlas account  
-- Python libraries (see `pi_code/requirements.txt` and `web_app/requirements.txt`):  
+- Python libraries (see `Pi_Code/requirements.txt` and `web_app/requirements.txt`):  
   - `deepface`, `mtcnn`, `pyzbar`, `cryptography`, `flask`, `pymongo`, `opencv-python`, `rpi.gpio`
 
 ---
 
-## ⚙️ Installation
+## Installation
 
-### 🖥 Raspberry Pi Setup
+### Raspberry Pi Setup
 
 1. Flash Raspberry Pi OS to the microSD card using **Raspberry Pi Imager**  
-2. Connect the camera, relay, and power supply as shown in `images/hardware_setup.jpg`  
-3. Boot the Raspberry Pi and update the system:
+2. Boot the Raspberry Pi and update the system:
     ```bash
     sudo apt update && sudo apt upgrade
     ```
-4. Install Python dependencies:
+3. Install Python dependencies:
     ```bash
     cd pi_code
     pip install -r requirements.txt
     ```
-5. Configure environment variables in `pi_code/.env`:
+4. Configure environment variables in `pi_code/.env`:
     ```env
     CAMERA_DEVICE=/dev/video0
     GPIO_RELAY_PIN=23
@@ -92,6 +90,7 @@ The system comprises **three main components**:
     ```bash
     git clone https://github.com/yourusername/Access-Control-System-RPi.git
     ```
+2. Configure environment variables
 2. Install dependencies:
     ```bash
     cd web_app
@@ -108,48 +107,46 @@ The system comprises **three main components**:
     ```
 5. Access the web app at [http://localhost:5000](http://localhost:5000)
 
-> 📄 See `docs/setup_guide.md` for detailed instructions.
-
 ---
 
-## 🚀 Usage
+## Usage
 
-### 🎥 Raspberry Pi Module
+### Raspberry Pi Module
 
-1. Run the facial recognition and QR code scanning scripts:
+1. Run the raspberry pi script:
     ```bash
     cd pi_code
-    python facial_recognition.py
-    python qr_code_scanner.py
+    python pi_code.py
     ```
-2. Upon successful authentication (face or QR), the system triggers the **D5-Evo gate** via the relay.
+2. Upon successful authentication (face or QR or admin control), the system triggers the **Gate** via the relay.
 
-### 🧑‍💼 Web Application
+### Web Application
 
-1. Open a browser and go to: [http://localhost:5000](http://localhost:5000)  
+1. Open a browser and go to: [http://<ip_address>:<port_no>](http://localhost:5000)  
 2. Log in to the admin interface to:
-   - Add or remove users (upload face images and generate QR codes)
+   - Add or remove users 
    - View authentication logs
-   - Monitor system status
+   - View live feed
+   - Control gate remotely
+   - Change password
 
 ---
 
-## 📊 Performance Results
+## Performance Results
 
 - **Facial Recognition**  
-  - 87.1% accuracy  
-  - Tested with 100 users under varied lighting conditions  
+  - 87.1% accuracy
+  - Average processing time: 1840 ms
+  - Tested with 15 users registered users and 10 imposters under good lighting conditions
 
 - **QR Code Authentication**  
   - 99.9% accuracy  
-  - Average processing time: 134.8 ms  
+  - Average processing time: 134.8 ms
+  - Tested with 10 valid QR codes and 5 invalid codes 
 
 - **Gate Integration**  
-  - 100% success rate  
-  - 120 ms response time for gate activation  
+  - Successfully integrated with a **Centurion D5-Evo gate controller**  
 
 ---
-
-## 📁 Folder Structure (Simplified)
 
 
