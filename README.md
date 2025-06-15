@@ -25,13 +25,14 @@ The system comprises **three main components**:
   Handles:
   - Facial recognition (DeepFace, MTCNN)
   - QR code scanning (PyZBar, Fernet)
-  - Gate control (via GPIO pins and a one-channel relay to the D5-Evo gate controller)
+  - Gate control (via GPIO pins and a one-channel relay to a gate controller)
 
 - **Web Application**  
   A Flask-based admin interface for:
   - User management
   - Authentication logs
-  - System monitoring  
+  - Remote gate control
+  - Viewing live feed 
   Connected to MongoDB Atlas for data storage
 
 - **Database**  
