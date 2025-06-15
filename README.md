@@ -2,7 +2,7 @@
 
 This repository contains the implementation of a **computer vision-based access control system** designed for secure, contactless authentication in residential environments. The system integrates **facial recognition** and **QR code scanning** for user authentication, a **Flask-based web application** for administrative control, mongodb atlas database for storing user information access logs and admin credentials.
 
-It was developed as a final-year project for the **Bachelor of Engineering in Electrical and Electronics Engineering** at the **University of Eswatini**.
+It was developed, in 2025, as a final-year project for the **Bachelor of Engineering in Electrical and Electronics Engineering** at the **University of Eswatini**.
 
 ---
 
@@ -85,7 +85,7 @@ The system comprises **three main components**:
     GPIO_RELAY_PIN=23
     ```
 
-### 🌐 Web App Setup
+### Web App Setup
 
 1. Clone the repository:
     ```bash
