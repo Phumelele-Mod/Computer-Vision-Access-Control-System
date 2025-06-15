@@ -106,7 +106,7 @@ The system comprises **three main components**:
     ```bash
     python app.py
     ```
-5. Access the web app at [http://localhost:5000](http://localhost:5000)
+5. Access the web app at [http://<ip_address>:<port_no>](http://<ip_address>:<port_no>)
 
 ---
 
